@@ -5,7 +5,6 @@ namespace HumanResourceAPI.Models
 {
     public class AccountRole
     {
-        public int Id { get; set; }
         [ForeignKey("Role")]
         public int RoleId { get; set; }
         public Role Role { get; set; }

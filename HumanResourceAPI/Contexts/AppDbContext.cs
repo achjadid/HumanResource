@@ -16,5 +16,10 @@ namespace HumanResourceAPI.Contexts
         public DbSet<AccountRole> AccountRoles { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Role> Roles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountRole>().HasNoKey();
+        }
     }
 }

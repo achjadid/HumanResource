@@ -79,7 +79,7 @@ namespace HumanResourceAPI.Repositories.Data
                 parameters.Add("@Gender", entity.Gender);
                 parameters.Add("@Manager_Id", entity.Manager_Id);
                 parameters.Add("@Department_Id", entity.Department_Id);
-                parameters.Add("@Role_Id", entity.Role_Id);
+                parameters.Add("@Role_Id", 3);
                 var insert = connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure);
                 return insert;
             }
@@ -94,7 +94,7 @@ namespace HumanResourceAPI.Repositories.Data
                 //new Claim(ClaimTypes.NameIdentifier, userToken.NIK),
                 //new Claim(ClaimTypes.Name, userToken.Name),
                 new Claim("NIK", userToken.NIK),
-                new Claim("Username", userToken.Email),
+                new Claim("Email", userToken.Email),
                 new Claim("RoleId", userToken.RoleId.ToString()),
                 new Claim("RoleName", userToken.RoleName)
                 //new Claim(ClaimTypes.Role, userToken.RoleName),

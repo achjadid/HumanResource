@@ -19,16 +19,16 @@ namespace HumanResourceAPI.Controllers
         }
 
         [HttpPost("login")]
-        public virtual ActionResult Login(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM)
         {
-            var insert = repository.Login(loginVM);
-            if (insert != null)
+            var login = await repository.Login(loginVM);
+            if (login != null)
             {
-                return StatusCode(200, new { status = HttpStatusCode.OK, message = "Berhasil Login", Data = insert });
+                return StatusCode(200, new { status = HttpStatusCode.OK, message = "Berhasil Login", Data = login });
             }
             else
             {
-                return StatusCode(500, new { status = HttpStatusCode.InternalServerError, message = "Gagal Login, username atau password salah.", Data = insert });
+                return StatusCode(500, new { status = HttpStatusCode.InternalServerError, message = "Gagal Login, username atau password salah.", Data = login });
             }
         }
 

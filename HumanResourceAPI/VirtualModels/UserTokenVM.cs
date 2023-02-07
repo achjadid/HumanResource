@@ -1,4 +1,6 @@
-﻿namespace HumanResourceAPI.VirtualModels
+﻿using HumanResourceAPI.Models;
+
+namespace HumanResourceAPI.VirtualModels
 {
     public class UserTokenVM
     {
@@ -9,6 +11,7 @@
         public string? LastName { get; set; }
         public int? RoleId { get; set; }
         public string? RoleName { get; set; }
+        public Role? Role { get; set; }
         public int? Department_Id { get; set; }
         public string? DepartmentName { get; set; }
     }

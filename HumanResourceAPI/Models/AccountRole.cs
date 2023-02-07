@@ -7,9 +7,9 @@ namespace HumanResourceAPI.Models
     {
         [ForeignKey("Role")]
         public int RoleId { get; set; }
-        public Role Role { get; set; }
         [ForeignKey("Account")]
         public string AccountNIK { get; set; }
-        public Account Account { get; set; }
+        public Role? Role { get; set; }
+        public Account? Account { get; set; }
     }
 }

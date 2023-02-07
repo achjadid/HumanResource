@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HumanResourceAPI.Models
@@ -9,6 +10,7 @@ namespace HumanResourceAPI.Models
         public string NIK { get; set; }
         public string Password { get; set; }
         [ForeignKey("NIK")]
-        public Employee Employee { get; set; }
+        [JsonIgnore]
+        public Employee? Employee { get; set; }
     }
 }

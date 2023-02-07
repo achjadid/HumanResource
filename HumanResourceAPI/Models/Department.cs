@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HumanResourceAPI.Models
@@ -9,8 +10,10 @@ namespace HumanResourceAPI.Models
         public string Name { get; set; }
         public string? Manager_Id { get; set; }
         [ForeignKey("Manager_Id")]
-        public Employee Manager { get; set; }
+        [JsonIgnore]
+        public Employee? Manager { get; set; }
         [InverseProperty("Department")]
-        public List<Employee> Employees { get; set; }
+        [JsonIgnore]
+        public List<Employee>? Employees { get; set; }
     }
 }

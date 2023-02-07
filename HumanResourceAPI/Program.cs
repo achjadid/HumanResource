@@ -9,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Add Cors
+builder.Services.AddCors(e =>
+{
+    e.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 // Add JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -48,6 +54,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthentication();
 

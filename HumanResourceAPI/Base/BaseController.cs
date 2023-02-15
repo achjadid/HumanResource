@@ -18,7 +18,7 @@ namespace HumanResourceAPI.Base
         }
 
         [HttpGet]
-        public virtual ActionResult Get()
+        public virtual async Task<IActionResult> Get()
         {
             var get = repository.Get();
             if (get.Count() != 0)
@@ -32,7 +32,7 @@ namespace HumanResourceAPI.Base
         }
 
         [HttpGet("{key}")]
-        public virtual ActionResult Get(Key key)
+        public virtual async Task<IActionResult> Get(Key key)
         {
             var get = repository.Get(key);
             if (get != null)
@@ -46,7 +46,7 @@ namespace HumanResourceAPI.Base
         }
 
         [HttpPost]
-        public virtual ActionResult Insert(Entity entity)
+        public virtual async Task<IActionResult> Insert(Entity entity)
         {
             var insert = repository.Insert(entity);
             if (insert >= 1)
@@ -60,7 +60,7 @@ namespace HumanResourceAPI.Base
         }
 
         [HttpPut]
-        public virtual ActionResult Update(Entity entity)
+        public virtual async Task<IActionResult> Update(Entity entity)
         {
             var insert = repository.Update(entity);
             if (insert >= 1)
@@ -74,7 +74,7 @@ namespace HumanResourceAPI.Base
         }
 
         [HttpDelete("{key}")]
-        public ActionResult Delete(Key key)
+        public async Task<IActionResult> Delete(Key key)
         {
             var delete = repository.Delete(key);
             if (delete >= 1)

@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Template/Template.cshtml";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- DataTales -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-primary">List Account</h3>
+        </div>
+        <div class="card-body">
+            <div class="float-right">
+                <button type="button" class="btn btn-primary" onclick="BtnAction('create');SelectDepartment();" data-toggle="modal" data-target="#accountModal">
+                    Add
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Modal -->
+            <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="accountForm" onsubmit="handleSubmit(event)">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="accountModalLabel"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" id="accountId" value="" hidden>
+                                <div class="form-row">
+                                    <div class="form-group col-md-7">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="LastName">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="birthDate">Birth Date</label>
+                                        <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="gender">Gender</label>
+                                        <select id="gender" class="form-control" required>
+                                            <option value="" selected disabled>Choose Gender...</option>
+                                            <option value="0">Male</option>
+                                            <option value="1">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" class="form-control" id="phone" placeholder="08xxxxxx" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="salary">Salary</label>
+                                    <input type="text" class="form-control" id="salary" placeholder="Salary">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="department">Department</label>
+                                        <select id="department" class="form-control" required>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="manager">Manager</label>
+                                        <select id="manager" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" id="save-account" name="save-account" class="btn btn-primary">Save</button>
+                                <button type="submit" id="update-account" name="update-account" class="btn btn-success">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="table_accounts" class="table table-striped table-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="col-1">No</th>
+                            <th class="col-1">Role</th>
+                            <th class="col-1">Email</th>
+                            <th class="col-2">Name</th>
+                            <th class="col-1">Birth Date</th>
+                            <th class="col-1">Gender</th>
+                            <th class="col-1">Salary</th>
+                            <th class="col-2">Department</th>
+                            <th class="col-1">Manager</th>
+                            <th class="col-1">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+@section Scripts {
+    <script src="~/js/account.js"></script>
+}
+

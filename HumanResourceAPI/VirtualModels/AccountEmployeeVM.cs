@@ -19,5 +19,6 @@ namespace HumanResourceAPI.VirtualModels
         public string? DepartmentName { get; set; }
         public int? Role_Id { get; set; }
         public string? RoleName { get; set; }
+        public List<Role>? Role { get; set; }
     }
 }

@@ -34,6 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<DepartmentRepository>();
 

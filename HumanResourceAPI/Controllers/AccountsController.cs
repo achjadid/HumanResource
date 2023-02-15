@@ -32,18 +32,6 @@ namespace HumanResourceAPI.Controllers
             }
         }
 
-        [HttpPost("create")]
-        public ActionResult Create(AccountEmployeeVM accountEmployeeVM)
-        {
-            var insert = repository.InsertAccountEmployee(accountEmployeeVM);
-            if (insert >= 1)
-            {
-                return StatusCode(200, new { status = HttpStatusCode.OK, message = "Data Berhasil Dimasukkan", Data = insert });
-            }
-
-            return StatusCode(500, new { status = HttpStatusCode.InternalServerError, message = "Gagal Memasukkan Data", Data = insert });
-        }
-
         //[HttpGet("old")]
         //public virtual ActionResult GetOld()
         //{

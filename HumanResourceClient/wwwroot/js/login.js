@@ -4,7 +4,6 @@
         $("#email").val() == "" ||
         $("#password").val() == ""
     ) {
-        console.log("dddasda");
         swal({
             icon: 'error',
             title: 'Failed',

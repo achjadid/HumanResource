@@ -10,6 +10,7 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace HumanResourceAPI.Repositories.Data
 {
@@ -31,26 +32,39 @@ namespace HumanResourceAPI.Repositories.Data
             {
                 var spCheckPassword = "SP_AccountsCheckPassword";
                 parameters.Add("@Email", loginVM.Email);
-                var userPassword = connection.QueryFirstOrDefault<Account>(spCheckPassword, parameters, commandType: CommandType.StoredProcedure);
-                if (userPassword == null)
+                var userData = await connection.QueryFirstOrDefaultAsync<AccountEmployeeVM>(spCheckPassword, parameters, commandType: CommandType.StoredProcedure);
+                if (userData == null)
                 {
                     return null;
                 }
 
-                bool verified = BCrypt.Net.BCrypt.Verify(loginVM.Password, userPassword.Password);
+                bool verified = BCrypt.Net.BCrypt.Verify(loginVM.Password, userData.Password);
                 if (!verified)
                 {
                     return null;
                 }
 
+                var userToken = new UserTokenVM();
+                userToken.NIK = userData.NIK;
+                userToken.Email = userData.Email;
+                userToken.FirstName = userData.FirstName;
+                userToken.LastName = userData.LastName;
+                userToken.Department_Id = userData.Department_Id;
+                userToken.DepartmentName = userData.DepartmentName;
+
+                var spGetEmplyeeRole = "SP_AccountRolesGetByEmployee";
                 parameters = new DynamicParameters();
-                var spUserToken = "SP_AccountsTokenData";
-                parameters.Add("@NIK", userPassword.NIK);
-                var userToken = connection.QueryFirstOrDefault<UserTokenVM>(spUserToken, parameters, commandType: CommandType.StoredProcedure);
-                if (userToken == null)
-                {
-                    return null;
-                }
+                parameters.Add("@NIK", userData.NIK);
+                userToken.Role = (List<Role>?) await connection.QueryAsync<Role>(spGetEmplyeeRole, parameters, commandType: CommandType.StoredProcedure);
+
+                //parameters = new DynamicParameters();
+                //var spUserToken = "SP_AccountsTokenData";
+                //parameters.Add("@NIK", userData.NIK);
+                //var userToken = await connection.QueryFirstOrDefaultAsync<UserTokenVM>(spUserToken, parameters, commandType: CommandType.StoredProcedure);
+                //if (userToken == null)
+                //{
+                //    return null;
+                //}
 
                 string token = GenerateJwtToken(userToken);
                 userToken.Token = token;
@@ -59,7 +73,7 @@ namespace HumanResourceAPI.Repositories.Data
             }
         }
 
-        public int InsertAccountEmployee(AccountEmployeeVM entity)
+        public async Task<int> InsertAccountEmployee(AccountEmployeeVM entity)
         {
             using (SqlConnection connection = new SqlConnection(_configuration["ConnectionStrings:HRAPI"]))
             {
@@ -80,7 +94,7 @@ namespace HumanResourceAPI.Repositories.Data
                 parameters.Add("@Manager_Id", entity.Manager_Id);
                 parameters.Add("@Department_Id", entity.Department_Id);
                 parameters.Add("@Role_Id", 3);
-                var insert = connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure);
+                int insert = await connection.ExecuteAsync(spName, parameters, commandType: CommandType.StoredProcedure);
                 return insert;
             }
         }
@@ -94,10 +108,11 @@ namespace HumanResourceAPI.Repositories.Data
                 //new Claim(ClaimTypes.NameIdentifier, userToken.NIK),
                 //new Claim(ClaimTypes.Name, userToken.Name),
                 new Claim("NIK", userToken.NIK),
+                new Claim("Name", userToken.FirstName + " " + userToken.LastName),
                 new Claim("Email", userToken.Email),
-                new Claim("RoleId", userToken.RoleId.ToString()),
-                new Claim("RoleName", userToken.RoleName)
-                //new Claim(ClaimTypes.Role, userToken.RoleName),
+                new Claim("Role", JsonSerializer.Serialize(userToken.Role)),
+                //new Claim("RoleId", userToken.RoleId.ToString()),
+                //new Claim("RoleName", userToken.RoleName),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
